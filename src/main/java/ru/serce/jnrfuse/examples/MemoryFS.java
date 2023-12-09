@@ -620,7 +620,15 @@ Response body: "Invalid message body: Could not decode JSON: {\n  \"term\" : \"{
         //need to fix this call to be able to send it over...dont know whats wrong
         //String json = "{\"term\":\"" + termVal + "\", \"phloLimit\":\"" + 1 + "\", \"phloPrice\":\"" + 1 + "\", \"validAfterBlockNumber\":\"" + 1 + "\", \"timestamp\":\"" + System.currentTimeMillis() + "\", \"shardId\":\"" + "root" + "\"}";
         
-        String json = createDeployDataJson(termVal);
+        JsonObject deployDataJson = new JsonObject();
+        deployDataJson.addProperty("term", termVal);
+        deployDataJson.addProperty("timestamp", System.currentTimeMillis());
+        deployDataJson.addProperty("phloPrice", 1L);
+        deployDataJson.addProperty("phloLimit", 1L);
+        deployDataJson.addProperty("validAfterBlockNumber", 1L);
+        deployDataJson.addProperty("shardId", "root"); //sandbox_1 if on ANTON's setup
+
+        String json = deployDataJson.toString();
 
 //         grpcurl --insecure --import-path ./node/target/protobuf_external --import-path ./models/src/main/protobuf --proto routing.proto --cert=./rchain.xmpl/node0/rnode/node.certificate.pem --key=./rchain.xmpl/node0/rnode/node.key.pem 127.0.0.1:40400 list 
 // routing.TransportLayer
@@ -630,7 +638,7 @@ Response body: "Invalid message body: Could not decode JSON: {\n  \"term\" : \"{
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:" + 40403 + "/api/deploy"))
                 .header("Content-Type", "application/json")
-                .POST(BodyPublishers.ofString(json, StandardCharsets.UTF_8))
+                .POST(BodyPublishers.ofString(json))
                 .build();
 
         System.out.println("request: " + request.toString());
