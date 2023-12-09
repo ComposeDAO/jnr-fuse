@@ -481,7 +481,7 @@ public class MemoryFS extends FuseStubFS {
         //the other laptop running the same software connected to the node could pull it down
         //drag and drop i only get the ._filename one due to the disk full error from timestamp
         if (path.contains("abc.txt")) {
-            sendRholangCode(path,dataString);
+            sendRholangCode(path, dataString);
         }
 
         System.out.println("WRITING: " + size);
@@ -717,18 +717,18 @@ Response body: "Invalid message body: Could not decode JSON: {\n  \"term\" : \"{
      }
 
      public String getRhoTemplate(String data) {
-        String rhoToSend = "new helloworld, stdout(`rho:io:stdout`) in {\n" + //
-                "    contract helloworld( world ) = {\n" + //
-                "        for( @msg <- world ) {\n" + //
-                "            stdout!(msg)\n" + //
-                "        }\n" + //
-                "    } |\n" + //
-                "    new world, world2 in {\n" + //
-                "        helloworld!(*world) |\n" + //
-                "        world!(\"Hello World\") |\n" + //
-                "        helloworld!(*world2) |\n" + //
-                "        world2!(\"$DATA$\")\n" + //
-                "    }\n" + //
+        String rhoToSend = "new helloworld, stdout(`rho:io:stdout`) in {" + //
+                "    contract helloworld( world ) = {" + //
+                "        for( @msg <- world ) {" + //
+                "            stdout!(msg)" + //
+                "        }" + //
+                "    } |" + //
+                "    new world, world2 in {" + //
+                "        helloworld!(*world) |" + //
+                "        world!(\"Hello World\") |" + //
+                "        helloworld!(*world2) |" + //
+                "        world2!(\"$DATA$\")" + //
+                "    }" + //
                 "}";
 
         rhoToSend = rhoToSend.replace("$DATA$", data);
